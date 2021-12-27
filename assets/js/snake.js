@@ -25,6 +25,9 @@ const colors = {
     }
 }
 
+// System UI font family
+const defaultFontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif';
+
 // The game can be changed here.
 const options = {
     game: {
@@ -44,7 +47,7 @@ const options = {
     },
     scoreText: {
         fillStyle: colors.white,
-        font: '12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+        font: `12px ${defaultFontFamily}`,
         textAlign: 'left',
         text() {
             return `Score: ${options.game.score}`
@@ -53,7 +56,7 @@ const options = {
     gameOver: {
         title: {
             fillStyle: colors.white,
-            font: '18px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+            font: `18px ${defaultFontFamily}`,
             textAlign: 'center',
             text() {
                 return `SCORE: ${options.game.score}`
@@ -61,7 +64,7 @@ const options = {
         },
         description: {
             fillStyle: colors.white,
-            font: '12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+            font: `12px ${defaultFontFamily}`,
             textAlign: 'center',
             text() {
                 return `Press Space to restart`
