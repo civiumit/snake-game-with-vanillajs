@@ -3,33 +3,74 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const columnCount = 20;
-const columnSize = canvas.width / columnCount;
-
-let snakeParts = [];
-let snakeLength = 0;
-
-const snakeHead = {
-    x: Math.floor(Math.random() * columnCount),
-    y: Math.floor(Math.random() * columnCount)
+// Elements inside the canvas derive their colors from here.
+// Food drawing directly uses the colorful function
+const colors = {
+    red: '#ff0000',
+    green: '#00ff00',
+    blue: '#0000ff',
+    yellow: '#ffff00',
+    purple: '#ff00ff',
+    orange: '#ffa500',
+    pink: '#ffc0cb',
+    cyan: '#00ffff',
+    magenta: '#ff00ff',
+    yellowgreen: '#9acd32',
+    black: '#000000',
+    white: '#ffffff',
+    colorfull() {
+        const ObjValToArr = Object.values(this);
+        const randomIndex = Math.floor(Math.random() * ObjValToArr.length);
+        return ObjValToArr[randomIndex];
+    }
 }
 
-const food = {
-    x: Math.floor(Math.random() * columnCount),
-    y: Math.floor(Math.random() * columnCount)
+// The game can be changed here.
+const options = {
+    game: {
+        score: 0,
+        speed: 8,
+        snakeParts: [],
+        snakeLength: 0
+    },
+    canvas: {
+        columnCount: 20,
+        columnSize: canvas.width / 20
+    },
+    snake: {
+        background: colors.yellowgreen,
+        stroke: colors.black,
+        lineWidth: 2
+    },
+    scoreText: {
+        fillStyle: colors.white,
+        font: '12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+        textAlign: 'left',
+        text() {
+            return `Score: ${options.game.score}`
+        },
+    },
+    gameOver: {
+        title: {
+            fillStyle: colors.white,
+            font: '18px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+            textAlign: 'center',
+            text() {
+                return `SCORE: ${options.game.score}`
+            },
+        },
+        description: {
+            fillStyle: colors.white,
+            font: '12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
+            textAlign: 'center',
+            text() {
+                return `Press Space to restart`
+            },
+        }
+    },
 }
 
-const direction = {
-    x: 0,
-    y: 0
-}
-
-// Frame speed
-const speed = 8;
-
-let score = 0;
-
-// Direction codes (Keyboard key codes for arrow keys):
+// Keyboard key codes for arrow keys:
 const key = {
     left: 37,
     up: 38,
@@ -38,6 +79,25 @@ const key = {
     space: 32
 }
 
+// Initial coordinates for the snake are randomly generated. 
+const snakeHead = {
+    x: Math.floor(Math.random() * options.canvas.columnCount),
+    y: Math.floor(Math.random() * options.canvas.columnCount)
+}
+
+// Initial coordinates for the food are randomly generated.
+const food = {
+    x: Math.floor(Math.random() * options.canvas.columnCount),
+    y: Math.floor(Math.random() * options.canvas.columnCount)
+}
+
+// The direction the snake will go. Updates SnakeHead values with arrow keys.
+const direction = {
+    x: 0,
+    y: 0
+}
+
+// Functions that make up the game
 const game = () => {
     clearCanvas();
     drawSnake();
@@ -47,28 +107,30 @@ const game = () => {
     gameOver();
 }
 
-let gameLoop = setInterval(game, 1000 / speed);
+// Replay every 1000 / Options.game.speed ms
+let gameLoop = setInterval(game, 1000 / options.game.speed);
 
+// See the options variable for the properties that make up the snake
 const drawSnake = () => {
 
-    ctx.fillStyle = 'yellowgreen';
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(snakeHead.x * columnCount, snakeHead.y * columnCount, columnSize, columnSize);
-    ctx.fillRect(snakeHead.x * columnCount, snakeHead.y * columnCount, columnSize, columnSize);
+    ctx.fillStyle = options.snake.background;
+    ctx.strokeStyle = options.snake.stroke;
+    ctx.lineWidth = options.snake.lineWidth;
+    ctx.strokeRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
+    ctx.fillRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
 
-    snakeParts.map((part) => {
-        ctx.fillStyle = 'yellowgreen';
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(part.x * columnCount, part.y * columnCount, columnSize, columnSize);
-        ctx.fillRect(part.x * columnCount, part.y * columnCount, columnSize, columnSize);
+    options.game.snakeParts.map((part) => {
+        ctx.fillStyle = options.snake.background;
+        ctx.strokeStyle = options.snake.stroke;
+        ctx.lineWidth = options.snake.lineWidth;
+        ctx.strokeRect(part.x * options.canvas.columnCount, part.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
+        ctx.fillRect(part.x * options.canvas.columnCount, part.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
     })
 
-    snakeParts.push({ x: snakeHead.x, y: snakeHead.y });
+    options.game.snakeParts.push({ x: snakeHead.x, y: snakeHead.y });
 
-    while (snakeParts.length > snakeLength) {
-        snakeParts.shift();
+    while (options.game.snakeParts.length > options.game.snakeLength) {
+        options.game.snakeParts.shift();
     }
 
     snakeHead.x += direction.x;
@@ -76,72 +138,78 @@ const drawSnake = () => {
 
 }
 
+// See the options and colors variables for the properties that make up the food
 const drawFood = () => {
-    let colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'magenta'];
-    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-    ctx.fillRect(food.x * columnCount, food.y * columnCount, columnSize, columnSize);
+    ctx.fillStyle = colors.colorfull();
+    ctx.fillRect(food.x * options.canvas.columnCount, food.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
 }
 
+// See the options variable for the properties that make up the score
 function drawScore() {
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'left';
-    ctx.font = '12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif';
-    ctx.fillText(`Score: ${score}`, 10, 20);
+    ctx.fillStyle = options.scoreText.fillStyle;
+    ctx.textAlign = options.scoreText.textAlign;
+    ctx.font = options.scoreText.font;
+    ctx.fillText(options.scoreText.text(), 10, 20);
 }
 
+// Each time the snake eats an apple, its length increases by 1 unit and the score increases by 1 unit.
 const snakeEatFood = () => {
     if (snakeHead.x === food.x && snakeHead.y === food.y) {
-        snakeLength++;
-        score++;
-        food.x = Math.floor(Math.random() * columnCount);
-        food.y = Math.floor(Math.random() * columnCount);
+        options.game.snakeLength++;
+        options.game.score++;
+        food.x = Math.floor(Math.random() * options.canvas.columnCount);
+        food.y = Math.floor(Math.random() * options.canvas.columnCount);
     }
 }
 
-
+// Clear screen when SetInterval function runs again
 const clearCanvas = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+// Game over when the snake hits corners or itself
 const gameOver = () => {
-    if (snakeHead.x < 0 || snakeHead.x >= columnCount || snakeHead.y < 0 || snakeHead.y >= columnCount || snakeParts.some((part) => part.x === snakeHead.x && part.y === snakeHead.y)) {
-        ctx.fillStyle = 'white';
-        ctx.font = "18px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(`SCORE: ${score}`, canvas.width / 2, canvas.height / 2);
+    if (snakeHead.x < 0 || snakeHead.x >= options.canvas.columnCount || snakeHead.y < 0 || snakeHead.y >= options.canvas.columnCount || options.game.snakeParts.some((part) => part.x === snakeHead.x && part.y === snakeHead.y)) {
+        ctx.fillStyle = options.gameOver.title.fillStyle;
+        ctx.font = options.gameOver.title.font;
+        ctx.textAlign = options.gameOver.title.textAlign;
+        ctx.fillText(options.gameOver.title.text(), canvas.width / 2, canvas.height / 2);
 
-        ctx.fillStyle = 'white';
-        ctx.font = "12px system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText('Press Space to restart', canvas.width / 2, canvas.height / 2 + 30);
+        ctx.fillStyle = options.gameOver.description.fillStyle;
+        ctx.font = options.gameOver.description.font;
+        ctx.textAlign = options.gameOver.description.textAlign;
+        ctx.fillText(options.gameOver.description.text(), canvas.width / 2, canvas.height / 2 + 30);
+
         clearInterval(gameLoop);
     }
 }
 
+// It is triggered by the space key. It resets the game.
 const restart = () => {
 
     clearInterval(gameLoop);
 
-    snakeParts = [];
-    snakeLength = 0;
+    options.game.snakeParts = [];
+    options.game.snakeLength = 0;
 
-    snakeHead.x = Math.floor(Math.random() * columnCount);
-    snakeHead.y = Math.floor(Math.random() * columnCount);
+    snakeHead.x = Math.floor(Math.random() * options.canvas.columnCount);
+    snakeHead.y = Math.floor(Math.random() * options.canvas.columnCount);
 
-    food.x = Math.floor(Math.random() * columnCount);
-    food.y = Math.floor(Math.random() * columnCount);
+    food.x = Math.floor(Math.random() * options.canvas.columnCount);
+    food.y = Math.floor(Math.random() * options.canvas.columnCount);
 
     direction.x = 0;
     direction.y = 0;
 
-    score = 0;
+    options.game.score = 0;
 
-    gameLoop = setInterval(game, 1000 / speed);
+    gameLoop = setInterval(game, 1000 / options.game.speed);
 }
 
 addEventListener('keydown', (e) => changeDirection(e));
 
+// It cannot be directed opposite to the direction of movement of the snake. 
 const changeDirection = (e) => {
     switch (e.keyCode) {
         case key.left:
