@@ -18,6 +18,12 @@
         text-transform: uppercase;
     }
     
+    a {
+        color: white;
+        text-decoration: none;
+        font-size: 0.85em;
+    }
+    
     .description {
         font-size: 0.85em;
         font-weight: 100;
