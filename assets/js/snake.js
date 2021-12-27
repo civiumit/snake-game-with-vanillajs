@@ -113,12 +113,14 @@ let gameLoop = setInterval(game, 1000 / options.game.speed);
 // See the options variable for the properties that make up the snake
 const drawSnake = () => {
 
+    // Snake head
     ctx.fillStyle = options.snake.background;
     ctx.strokeStyle = options.snake.stroke;
     ctx.lineWidth = options.snake.lineWidth;
     ctx.strokeRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
     ctx.fillRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
 
+    // Snake body
     options.snake.snakeParts.map((part) => {
         ctx.fillStyle = options.snake.background;
         ctx.strokeStyle = options.snake.stroke;
