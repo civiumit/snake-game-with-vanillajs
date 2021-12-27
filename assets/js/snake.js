@@ -29,9 +29,7 @@ const colors = {
 const options = {
     game: {
         score: 0,
-        speed: 8,
-        snakeParts: [],
-        snakeLength: 0
+        speed: 8
     },
     canvas: {
         columnCount: 20,
@@ -40,7 +38,9 @@ const options = {
     snake: {
         background: colors.yellowgreen,
         stroke: colors.black,
-        lineWidth: 2
+        lineWidth: 2,
+        snakeParts: [],
+        snakeLength: 0
     },
     scoreText: {
         fillStyle: colors.white,
@@ -119,7 +119,7 @@ const drawSnake = () => {
     ctx.strokeRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
     ctx.fillRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
 
-    options.game.snakeParts.map((part) => {
+    options.snake.snakeParts.map((part) => {
         ctx.fillStyle = options.snake.background;
         ctx.strokeStyle = options.snake.stroke;
         ctx.lineWidth = options.snake.lineWidth;
@@ -127,10 +127,10 @@ const drawSnake = () => {
         ctx.fillRect(part.x * options.canvas.columnCount, part.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
     })
 
-    options.game.snakeParts.push({ x: snakeHead.x, y: snakeHead.y });
+    options.snake.snakeParts.push({ x: snakeHead.x, y: snakeHead.y });
 
-    while (options.game.snakeParts.length > options.game.snakeLength) {
-        options.game.snakeParts.shift();
+    while (options.snake.snakeParts.length > options.snake.snakeLength) {
+        options.snake.snakeParts.shift();
     }
 
     snakeHead.x += direction.x;
@@ -155,7 +155,7 @@ function drawScore() {
 // Each time the snake eats an apple, its length increases by 1 unit and the score increases by 1 unit.
 const snakeEatFood = () => {
     if (snakeHead.x === food.x && snakeHead.y === food.y) {
-        options.game.snakeLength++;
+        options.snake.snakeLength++;
         options.game.score++;
         food.x = Math.floor(Math.random() * options.canvas.columnCount);
         food.y = Math.floor(Math.random() * options.canvas.columnCount);
@@ -170,7 +170,7 @@ const clearCanvas = () => {
 
 // Game over when the snake hits corners or itself
 const gameOver = () => {
-    if (snakeHead.x < 0 || snakeHead.x >= options.canvas.columnCount || snakeHead.y < 0 || snakeHead.y >= options.canvas.columnCount || options.game.snakeParts.some((part) => part.x === snakeHead.x && part.y === snakeHead.y)) {
+    if (snakeHead.x < 0 || snakeHead.x >= options.canvas.columnCount || snakeHead.y < 0 || snakeHead.y >= options.canvas.columnCount || options.snake.snakeParts.some((part) => part.x === snakeHead.x && part.y === snakeHead.y)) {
         ctx.fillStyle = options.gameOver.title.fillStyle;
         ctx.font = options.gameOver.title.font;
         ctx.textAlign = options.gameOver.title.textAlign;
@@ -190,8 +190,8 @@ const restart = () => {
 
     clearInterval(gameLoop);
 
-    options.game.snakeParts = [];
-    options.game.snakeLength = 0;
+    options.snake.snakeParts = [];
+    options.snake.snakeLength = 0;
 
     snakeHead.x = Math.floor(Math.random() * options.canvas.columnCount);
     snakeHead.y = Math.floor(Math.random() * options.canvas.columnCount);
