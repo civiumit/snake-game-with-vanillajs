@@ -71,7 +71,7 @@ const options = {
 }
 
 // Keyboard key codes for arrow keys:
-const key = {
+const keys = {
     left: 37,
     up: 38,
     right: 39,
@@ -185,7 +185,7 @@ const gameOver = () => {
     }
 }
 
-// It is triggered by the space key. It resets the game.
+// It is triggered by the space keys. It resets the game.
 const restart = () => {
 
     clearInterval(gameLoop);
@@ -212,23 +212,23 @@ addEventListener('keydown', (e) => changeDirection(e));
 // It cannot be directed opposite to the direction of movement of the snake. 
 const changeDirection = (e) => {
     switch (e.keyCode) {
-        case key.left:
+        case keys.left:
             if (direction.x !== 1) direction.x = -1;
             direction.y = 0;
             break;
-        case key.up:
+        case keys.up:
             direction.x = 0;
             if (direction.y !== 1) direction.y = -1;
             break;
-        case key.right:
+        case keys.right:
             if (direction.x !== -1) direction.x = 1;
             direction.y = 0;
             break;
-        case key.down:
+        case keys.down:
             direction.x = 0;
             if (direction.y !== -1) direction.y = 1;
             break;
-        case key.space:
+        case keys.space:
             restart();
             break;
     }
