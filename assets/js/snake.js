@@ -25,7 +25,7 @@ const direction = {
 }
 
 // Frame speed
-const speed = 9;
+const speed = 8;
 
 let score = 0;
 
