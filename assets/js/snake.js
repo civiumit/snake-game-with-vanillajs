@@ -34,7 +34,7 @@ const font = {
         lg: '18px',
     },
     getFont(size) {
-        return `${this.fontFamily} ${this.size[size]}`;
+        return `${this.size[size]} ${this.fontFamily}`;
     }
 }
 
