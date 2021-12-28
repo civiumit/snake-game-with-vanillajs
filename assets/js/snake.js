@@ -36,14 +36,12 @@ let gameLoop = setInterval(game, 1000 / options.game.speed);
 
 // See the options variable for the properties that make up the snake
 const drawSnake = () => {
-
     // Snake head
     ctx.fillStyle = options.snake.background;
     ctx.strokeStyle = options.snake.stroke;
     ctx.lineWidth = options.snake.lineWidth;
     ctx.strokeRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
     ctx.fillRect(snakeHead.x * options.canvas.columnCount, snakeHead.y * options.canvas.columnCount, options.canvas.columnSize, options.canvas.columnSize);
-
     // Snake body
     options.snake.snakeParts.map((part) => {
         ctx.fillStyle = options.snake.background;
@@ -61,7 +59,6 @@ const drawSnake = () => {
 
     snakeHead.x += direction.x;
     snakeHead.y += direction.y;
-
 }
 
 // See the options and colors variables for the properties that make up the food
@@ -97,11 +94,12 @@ const clearCanvas = () => {
 // Game over when the snake hits corners or itself
 const gameOver = () => {
     if (snakeHead.x < 0 || snakeHead.x >= options.canvas.columnCount || snakeHead.y < 0 || snakeHead.y >= options.canvas.columnCount || options.snake.snakeParts.some((part) => part.x === snakeHead.x && part.y === snakeHead.y)) {
+        // Game over title
         ctx.fillStyle = options.gameOver.title.fillStyle;
         ctx.font = options.gameOver.title.font;
         ctx.textAlign = options.gameOver.title.textAlign;
         ctx.fillText(options.gameOver.title.text(), options.canvas.width / 2, options.canvas.height / 2);
-
+        // Geme over description
         ctx.fillStyle = options.gameOver.description.fillStyle;
         ctx.font = options.gameOver.description.font;
         ctx.textAlign = options.gameOver.description.textAlign;
