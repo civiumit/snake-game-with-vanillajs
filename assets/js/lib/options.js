@@ -57,7 +57,7 @@ const keys = {
     up: 38,
     right: 39,
     down: 40,
-    space: 32
+    reset: 32
 }
 
 export { options, keys, ctx }
