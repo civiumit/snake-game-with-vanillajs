@@ -1,5 +1,4 @@
-import font from './font.js';
-import colors from './colors.js';
+import { colors, font } from './styles.js';
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
