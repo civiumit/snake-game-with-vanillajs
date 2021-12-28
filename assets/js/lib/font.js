@@ -5,6 +5,7 @@ const font = {
         sm: '12px',
         md: '14px',
         lg: '18px',
+        xl: '24px'
     },
     getFont(size) {
         return `${this.size[size]} ${this.fontFamily}`;
