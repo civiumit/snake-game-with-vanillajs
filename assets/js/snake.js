@@ -1,96 +1,7 @@
 "use strict";
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-
-// Elements inside the canvas shape their colors from here.
-// Food drawing directly uses the colorful function
-const colors = {
-    red: '#ff0000',
-    green: '#00ff00',
-    blue: '#0000ff',
-    yellow: '#ffff00',
-    purple: '#ff00ff',
-    orange: '#ffa500',
-    pink: '#ffc0cb',
-    cyan: '#00ffff',
-    magenta: '#ff00ff',
-    yellowgreen: '#9acd32',
-    black: '#000000',
-    white: '#ffffff',
-    colorfull() {
-        const ObjValToArr = Object.values(this);
-        const randomIndex = Math.floor(Math.random() * ObjValToArr.length);
-        return ObjValToArr[randomIndex];
-    }
-}
-
-const font = {
-    // System UI font family
-    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
-    size: {
-        sm: '12px',
-        md: '14px',
-        lg: '18px',
-    },
-    getFont(size) {
-        return `${this.size[size]} ${this.fontFamily}`;
-    }
-}
-
-// The game can be changed here.
-const options = {
-    game: {
-        score: 0,
-        speed: 8
-    },
-    canvas: {
-        columnCount: 20,
-        columnSize: canvas.width / 20
-    },
-    snake: {
-        background: colors.yellowgreen,
-        stroke: colors.black,
-        lineWidth: 2,
-        snakeParts: [],
-        snakeLength: 0
-    },
-    scoreText: {
-        fillStyle: colors.white,
-        font: font.getFont('sm'),
-        textAlign: 'left',
-        text() {
-            return `Score: ${options.game.score}`
-        },
-    },
-    gameOver: {
-        title: {
-            fillStyle: colors.white,
-            font: font.getFont('lg'),
-            textAlign: 'center',
-            text() {
-                return `SCORE: ${options.game.score}`
-            },
-        },
-        description: {
-            fillStyle: colors.white,
-            font: font.getFont('sm'),
-            textAlign: 'center',
-            text() {
-                return `Press Space to restart`
-            },
-        }
-    },
-}
-
-// Keyboard key codes for arrow keys:
-const keys = {
-    left: 37,
-    up: 38,
-    right: 39,
-    down: 40,
-    space: 32
-}
+import colors from './lib/colors.js';
+import { options, keys, ctx } from './lib/options.js';
 
 // Initial coordinates for the snake are randomly generated. 
 const snakeHead = {
@@ -180,7 +91,7 @@ const snakeEatFood = () => {
 // Clear screen when SetInterval function runs again
 const clearCanvas = () => {
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, options.canvas.width, options.canvas.height);
 }
 
 // Game over when the snake hits corners or itself
@@ -189,12 +100,12 @@ const gameOver = () => {
         ctx.fillStyle = options.gameOver.title.fillStyle;
         ctx.font = options.gameOver.title.font;
         ctx.textAlign = options.gameOver.title.textAlign;
-        ctx.fillText(options.gameOver.title.text(), canvas.width / 2, canvas.height / 2);
+        ctx.fillText(options.gameOver.title.text(), options.canvas.width / 2, options.canvas.height / 2);
 
         ctx.fillStyle = options.gameOver.description.fillStyle;
         ctx.font = options.gameOver.description.font;
         ctx.textAlign = options.gameOver.description.textAlign;
-        ctx.fillText(options.gameOver.description.text(), canvas.width / 2, canvas.height / 2 + 30);
+        ctx.fillText(options.gameOver.description.text(), options.canvas.width / 2, options.canvas.height / 2 + 30);
 
         clearInterval(gameLoop);
     }
