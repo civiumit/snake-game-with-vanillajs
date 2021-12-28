@@ -154,7 +154,7 @@ const changeDirection = (e) => {
             direction.x = 0;
             if (direction.y !== -1) direction.y = 1;
             break;
-        case keys.space:
+        case keys.reset:
             restart();
             break;
     }
