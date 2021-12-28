@@ -60,4 +60,4 @@ const keys = {
     reset: 32
 }
 
-export { options, keys, ctx }
+export { options, keys, ctx, colors }
