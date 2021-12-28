@@ -3,7 +3,7 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-// Elements inside the canvas derive their colors from here.
+// Elements inside the canvas shape their colors from here.
 // Food drawing directly uses the colorful function
 const colors = {
     red: '#ff0000',
