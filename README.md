@@ -1,4 +1,4 @@
-# Snake Game With Vanillajs ES Modules
+# Snake Game With VanillaJS ES Modules
 
 This is a simple classic snake game created using the canvases of HTML5 and javascript.
 
