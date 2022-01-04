@@ -1,6 +1,6 @@
 "use strict";
 
-import { options, keys, ctx, colors } from './lib/options.js';
+import { options, keys, ctx, colors } from './options.js';
 
 // Initial coordinates for the snake are randomly generated. 
 const snakeHead = {
