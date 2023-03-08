@@ -1,4 +1,3 @@
-// Elements inside the canvas shape their colors from here.
 // Food drawing directly uses the colorful function
 const colors = {
     red: '#ff0000',
@@ -21,7 +20,6 @@ const colors = {
 }
 
 const font = {
-    // System UI font family
     fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Oxygen, Cantarell, sans-serif',
     size: {
         sm: '12px',
